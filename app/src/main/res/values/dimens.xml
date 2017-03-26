@@ -1,6 +1,13 @@
 <resources>
     <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="fab_elevation">6dp</dimen>
+    <dimen name="fab_pressed_translation">12dp</dimen>
+    <dimen name="dialog_symbol_margin">4dp</dimen>
+    <dimen name="text_end_margin">10sp</dimen>
+    <dimen name="percent_text_padding">3dp</dimen>
+    <dimen name="wgt_refresh_btn_size">20dp</dimen>
     <dimen name="wgt_min_height">180dp</dimen>
     <dimen name="wgt_min_width">180dp</dimen>
     <dimen name="wgt_margin_legacy">5dp</dimen>
+    <dimen name="wgt_item_height">30dp</dimen>
 </resources>

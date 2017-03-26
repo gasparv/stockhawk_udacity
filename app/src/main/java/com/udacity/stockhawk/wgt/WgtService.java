@@ -6,13 +6,11 @@ import android.app.TaskStackBuilder;
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.Intent;
-import android.database.Cursor;
 import android.support.annotation.Nullable;
 import android.widget.RemoteViews;
 
 import com.udacity.stockhawk.R;
-import com.udacity.stockhawk.data.Contract;
-import com.udacity.stockhawk.ui.MainActivity;
+import com.udacity.stockhawk.ui.DetailActivity;
 
 /**
  * Created by gaspa on 25.3.2017.
@@ -29,26 +27,13 @@ public class WgtService extends IntentService {
 
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this);
         int[] appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(this,Provider.class));
-        Cursor data = getContentResolver().query(Contract.Quote.URI,null,null,null,null);
-        if(data == null)
-            return;
-        if(!data.moveToFirst())
-        {
-            data.close();
-            return;
-        }
 
         for(int appWidgetId:appWidgetIds)
         {
             RemoteViews remoteViews = new RemoteViews(this.getPackageName(), R.layout.widget);
-
-            Intent actIntent = new Intent(this, MainActivity.class);
-            PendingIntent pendingIntent = PendingIntent.getActivity(this,0,actIntent,0);
-
-            remoteViews.setOnClickPendingIntent(R.id.widget_list_item,pendingIntent);
             remoteViews.setRemoteAdapter(R.id.widget_list,new Intent(this,WgtRemoteViews.class));
 
-            Intent clickIntentTemplate = new Intent(this, MainActivity.class);
+            Intent clickIntentTemplate = new Intent(this, DetailActivity.class);
             PendingIntent clickPendingIntentTemplate = TaskStackBuilder.create(this)
                     .addNextIntentWithParentStack(clickIntentTemplate)
                     .getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);

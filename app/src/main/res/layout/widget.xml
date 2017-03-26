@@ -10,8 +10,8 @@
         android:layout_height="match_parent">
     <ImageView
         android:contentDescription="@string/description_widget_refresh"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
+        android:layout_width="@dimen/wgt_refresh_btn_size"
+        android:layout_height="@dimen/wgt_refresh_btn_size"
         android:src="@android:drawable/stat_notify_sync_noanim"
         android:layout_gravity="end"
         android:id="@+id/widget_refresh"/>

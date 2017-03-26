@@ -1,6 +1,5 @@
 package com.udacity.stockhawk.wgt;
 
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -11,7 +10,6 @@ import android.widget.RemoteViewsService;
 
 import com.udacity.stockhawk.R;
 import com.udacity.stockhawk.data.Contract;
-import com.udacity.stockhawk.ui.MainActivity;
 
 /**
  * Created by gaspa on 25.3.2017.
@@ -20,14 +18,15 @@ import com.udacity.stockhawk.ui.MainActivity;
 public class WgtRemoteViews extends RemoteViewsService {
 
     @Override
-    public RemoteViewsFactory onGetViewFactory(Intent intent) {
+    public RemoteViewsFactory onGetViewFactory(final Intent innerIntent) {
         return new RemoteViewsFactory() {
             Context context;
             Cursor mCursor;
-
+            Intent outerIntent;
             @Override
             public void onCreate() {
                 context = WgtRemoteViews.this;
+                outerIntent = innerIntent;
             }
 
             @Override
@@ -63,8 +62,23 @@ public class WgtRemoteViews extends RemoteViewsService {
                 }
                 RemoteViews views = new RemoteViews(getPackageName(),R.layout.widget_list_item);
                 views.setTextViewText(R.id.symbol,mCursor.getString(mCursor.getColumnIndex(Contract.Quote.COLUMN_SYMBOL)));
-
+                views.setTextViewText(R.id.price,"$" + mCursor.getString(mCursor.getColumnIndex(Contract.Quote.COLUMN_PRICE)));
+                float change = mCursor.getFloat(
+                        mCursor.getColumnIndex(
+                                Contract.Quote.COLUMN_PERCENTAGE_CHANGE
+                        )
+                );
+                views.setTextViewText(
+                        R.id.change,
+                        change>0?"+"+Float.toString(change)+"%":Float.toString(change)+"%"
+                );
+                if(change>0)
+                    views.setInt(R.id.change,"setBackgroundResource",R.drawable.percent_change_pill_green);
+                else
+                    views.setInt(R.id.change,"setBackgroundResource",R.drawable.percent_change_pill_red);
                 Intent intent = new Intent();
+                intent.putExtra(getString(R.string.intent_extra_stock_id),mCursor.getString(mCursor.getColumnIndex(Contract.Quote.COLUMN_SYMBOL)));
+                intent.putExtra(getString(R.string.intent_extra_stock_history),mCursor.getString(mCursor.getColumnIndex(Contract.Quote.COLUMN_HISTORY)));
                 views.setOnClickFillInIntent(R.id.widget_list_item,intent);
 
                 Intent refresh = new Intent();

@@ -6,13 +6,9 @@ import android.preference.PreferenceManager;
 
 import com.udacity.stockhawk.R;
 
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
-
-import yahoofinance.Stock;
-import yahoofinance.YahooFinance;
 
 public final class PrefUtils {
 
